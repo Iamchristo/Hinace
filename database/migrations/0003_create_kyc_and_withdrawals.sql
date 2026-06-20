@@ -1,0 +1,41 @@
+CREATE TABLE kyc_profiles (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT UNSIGNED NOT NULL,
+    full_name VARCHAR(190) NULL,
+    date_of_birth DATE NULL,
+    address VARCHAR(255) NULL,
+    country CHAR(2) NULL,
+    document_type VARCHAR(64) NULL,
+    document_number_encrypted VARBINARY(512) NULL,
+    document_front_path VARCHAR(255) NULL,
+    document_back_path VARCHAR(255) NULL,
+    selfie_path VARCHAR(255) NULL,
+    status ENUM('pending', 'approved', 'rejected') NOT NULL DEFAULT 'pending',
+    tier_requested TINYINT UNSIGNED NOT NULL DEFAULT 1,
+    reviewed_by_admin_id BIGINT UNSIGNED NULL,
+    reviewed_at TIMESTAMP NULL,
+    rejection_reason VARCHAR(255) NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY uq_kyc_user (user_id),
+    CONSTRAINT fk_kyc_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE withdrawal_requests (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT UNSIGNED NOT NULL,
+    wallet_id BIGINT UNSIGNED NOT NULL,
+    amount DECIMAL(20, 8) NOT NULL,
+    destination_encrypted VARBINARY(1024) NULL,
+    status ENUM('pending', 'approved', 'rejected', 'processing', 'completed') NOT NULL DEFAULT 'pending',
+    rejection_reason VARCHAR(255) NULL,
+    requested_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    reviewed_by_admin_id BIGINT UNSIGNED NULL,
+    reviewed_at TIMESTAMP NULL,
+    transaction_id BIGINT UNSIGNED NULL,
+    KEY idx_withdrawals_user (user_id),
+    KEY idx_withdrawals_status (status),
+    CONSTRAINT fk_withdrawals_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    CONSTRAINT fk_withdrawals_wallet FOREIGN KEY (wallet_id) REFERENCES wallets (id) ON DELETE RESTRICT,
+    CONSTRAINT fk_withdrawals_transaction FOREIGN KEY (transaction_id) REFERENCES transactions (id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
