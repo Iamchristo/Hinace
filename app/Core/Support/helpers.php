@@ -27,7 +27,6 @@ if (!function_exists('layout')) {
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>{$title} - Hinace</title>
-            <script src="https://cdn.tailwindcss.com"></script>
             <link rel="stylesheet" href="/assets/{$theme}/theme.css">
         </head>
         <body class="bg-slate-950 text-slate-100 min-h-screen" data-theme="{$theme}">
