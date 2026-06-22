@@ -1,0 +1,10 @@
+# Destination channel: where reposts are sent. The logged-in account must be
+# a member with posting rights (admin, or the channel allows member posts).
+destination: "@your_channel"
+
+# Source channels to watch. The logged-in account will auto-join these as a
+# regular subscriber if it isn't already a member. Use @username or a
+# numeric channel id (e.g. -1001234567890).
+sources:
+  - "@channel_one"
+  - "@channel_two"

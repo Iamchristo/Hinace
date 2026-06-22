@@ -1,0 +1,12 @@
+services:
+  repost-bot:
+    build: .
+    env_file:
+      - .env
+    volumes:
+      # Persists the .session file across container rebuilds/restarts.
+      # Requires TG_SESSION_NAME=data/repost_bot in .env so the file lands here.
+      - ./data:/app/data
+    working_dir: /app
+    command: python bot.py
+    restart: unless-stopped
